@@ -9,11 +9,20 @@ import {
   Link
 } from "react-router-dom";
 
+import axios from 'axios';
+
 class App extends React.Component {
   state = { books: [] };
 
   async fetchBooks() {
     let apiUrl = '${process.env.SERVER}/books';
+    try {
+      let results = await axios.get(apiUrl);
+      this.setState({ books: results.data });
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
   render() {
     return (
@@ -27,6 +36,14 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/">
               <h1>Home</h1>
+              {this.state.books.length > 0 &&
+                <>
+                  <h2>Books!</h2>
+                  {this.state.books.map(book => (
+                    <p key={book._id}>book.title</p>
+                    ))}
+                </>
+                }
             </Route>
             <Route path="/about">
               <h1>About Page Here</h1>

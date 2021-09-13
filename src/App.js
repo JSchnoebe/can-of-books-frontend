@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import BestBooks from './BestBooks';
+import Profile from './Profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter as Router,
@@ -14,8 +16,12 @@ import axios from 'axios';
 class App extends React.Component {
   state = { books: [] };
 
+  componentDidMount() {
+    this.fetchBooks();
+  }
+
   async fetchBooks() {
-    let apiUrl = '${process.env.SERVER}/books';
+    let apiUrl = `${process.env.SERVER}/books`;
     try {
       let results = await axios.get(apiUrl);
       this.setState({ books: results.data });
@@ -24,37 +30,7 @@ class App extends React.Component {
       console.log(err);
     }
   }
-  render() {
-    return (
-      <>
-        <Router>
-          <nav>
-            <h1>World of Books</h1>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-          <Switch>
-            <Route exact path="/">
-              <h1>Home</h1>
-              {this.state.books.length > 0 &&
-                <>
-                  <h2>Books!</h2>
-                  {this.state.books.map(book => (
-                    <p key={book._id}>book.title</p>
-                    ))}
-                </>
-                }
-            </Route>
-            <Route path="/about">
-              <h1>About Page Here</h1>
-              <p>I am Jaren</p>
-            </Route>
-          </Switch>
-        </Router>
-      </>
-    )
-  }
-
+  
 
   constructor(props) {
     super(props);
@@ -82,9 +58,11 @@ class App extends React.Component {
           <Header user={this.state.user} onLogout={this.logoutHandler} />
           <Switch>
             <Route exact path="/">
-              {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
+              <BestBooks/>
             </Route>
-            {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
+            <Route path="/profile">
+            <Profile/>
+            </Route>
           </Switch>
           <Footer />
         </Router>

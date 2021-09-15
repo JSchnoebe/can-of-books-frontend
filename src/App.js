@@ -12,6 +12,9 @@ import {
 } from "react-router-dom";
 
 import axios from 'axios';
+import CreateBook from './CreateBook';
+
+const SERVER = 'http://localhost:3000';
 
 class App extends React.Component {
   state = { books: [] };
@@ -30,7 +33,17 @@ class App extends React.Component {
       console.log(err);
     }
   }
+
   
+  handleSave = async bookInfo => {
+    let apiUrl = `${SERVER}/books`;
+    let results = await axios.post(apiUrl, bookInfo);
+    let newBook = results.data;
+    console.log(newBook);
+    this.setState({
+      books: this.state.books.concat(newBook)
+    })
+  }
 
   constructor(props) {
     super(props);
@@ -56,8 +69,17 @@ class App extends React.Component {
       <>
         <Router>
           <Header user={this.state.user} onLogout={this.logoutHandler} />
+          <h1>World of Books</h1>
+          <nav>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+          </nav>
           <Switch>
             <Route exact path="/">
+              <h1>Home</h1>
+              <CreateBook onSave={this.handleSave} />
+              {this.state.books.length > 0 &&
+                <h2>Books!</h2>}
               <BestBooks/>
             </Route>
             <Route path="/profile">

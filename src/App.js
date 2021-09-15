@@ -21,7 +21,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
+      user: {username: "JSchnoebelen", email:"jarenschnoebelen@yahoo.com" },
       books: [],
     }
   }

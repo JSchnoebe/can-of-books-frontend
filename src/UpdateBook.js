@@ -1,5 +1,5 @@
 import React from 'react';
-import Book from './Book';
+
 
 export default class UpdateBook extends React.Component {
   handleSubmit = event => {
@@ -27,10 +27,10 @@ export default class UpdateBook extends React.Component {
     if (!book) return null;
 
     return (
-      <form method="post" onSubmit="{this.handleSubmit}">
-        <imput placeholder="title" name="title" defaultvalue={book.title} />
-        <input placeholder="description" name="description" defaultvalue ={book.description}/>
-        <input placeholder="email" name="email" defaultvalue={book.email} />
+      <form method="post" onSubmit={this.handleSubmit}>
+        <input placeholder="title" name="title" defaultValue={book.title} />
+        <input placeholder="description" name="description" defaultValue ={book.description}/>
+        <input placeholder="email" name="email" defaultValue={book.email} />
         <button type="submit">
           Save
         </button>

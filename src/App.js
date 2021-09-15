@@ -14,7 +14,7 @@ import Book from './Book';
 import axios from 'axios';
 import CreateBook from './CreateBook';
 
-const SERVER = 'http://localhost:3000';
+const SERVER = process.env.REACT_APP_SERVER;
 
 class App extends React.Component {
 
@@ -46,10 +46,17 @@ class App extends React.Component {
     let apiUrl = `${SERVER}/books`;
     let results = await axios.post(apiUrl, bookInfo);
     let newBook = results.data;
-    console.log(newBook);
+    console.log('this is a new book', newBook);
     this.setState({
       books: [newBook, ...this.state.books]
     })
+    this.fetchBooks();
+  }
+
+  handleUpdate = async (bookId, bookInfo) => {
+    let apiUrl = `${SERVER}/books/${bookId}`;
+    await axios.put(apiUrl, bookInfo);
+
     this.fetchBooks();
   }
 
@@ -101,6 +108,7 @@ class App extends React.Component {
                     key={book._id}
                     book={book}
                     onDelete={this.handleDelete}
+                    onUpdate={this.handleUpdate}
                   />
                 ))}
                 </>

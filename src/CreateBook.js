@@ -19,8 +19,8 @@ export default class CreateBook extends React.Component {
   }
   render() {
     return (
-      <form method="post" onSubmit="{this.handleSubmit}">
-        <imput placeholder="title" name="title" />
+      <form method="post" onSubmit={this.handleSubmit}>
+        <input placeholder="title" name="title" />
         <input placeholder="description" name="description" />
         <input placeholder="email" name="email" />
         <button type="submit">

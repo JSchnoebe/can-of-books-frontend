@@ -2,12 +2,20 @@ import React from 'react';
 import UpdateBook from './UpdateBook';
 
 export default class Book extends React.Component {
+  state = { update: false };
+
+  handleUpdate = async (id, bookInfo) => {
+    await this.props.onUpdate(id, bookInfo);
+
+    this.setState({ update: false });
+  }
+
   render() {
 
     const { book, onDelete } = this.props;
 
     return (
-      <p>
+      <div>
         <button onClick={() => onDelete(book._id)}>&times;</button>
         {this.state.update
           ? (
@@ -24,7 +32,7 @@ export default class Book extends React.Component {
             </>
           )
         }
-      </p>
+      </div>
     )
   }
 }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import Book from './Book';
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -14,8 +15,8 @@ class BestBooks extends React.Component {
   }
 
   async fetchBooks() {
-    const SERVER = process.env.SERVER;
-    let results = await axios.get(`http://localhost:3001/books`);
+    const SERVER = process.env.REACT_APP_SERVER;
+    let results = await axios.get(`${SERVER}/books`);
     let books = results.data;
     console.log(results.data);
     this.setState({ books });
@@ -31,7 +32,7 @@ class BestBooks extends React.Component {
 
     return (
       <>
-        <h1>Books!</h1>
+        <h1>Best Books!</h1>
         {books ? <ul>{books.map((book, idx) => (
           <p key={idx}>{book.title}</p>
         ))}</ul>: <p>Loading Books..</p>}

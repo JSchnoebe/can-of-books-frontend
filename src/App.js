@@ -10,11 +10,9 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Book from './Book';
-import axios from 'axios';
-import CreateBook from './CreateBook';
 
-const SERVER = process.env.REACT_APP_SERVER;
+
+
 
 class App extends React.Component {
 
@@ -26,48 +24,7 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.fetchBooks();
-  }
 
-  async fetchBooks() {
-    let apiUrl = `${SERVER}/books`;
-    try {
-      let results = await axios.get(apiUrl);
-      this.setState({ books: results.data });
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }
-
-  
-  handleSave = async bookInfo => {
-    let apiUrl = `${SERVER}/books`;
-    let results = await axios.post(apiUrl, bookInfo);
-    let newBook = results.data;
-    console.log('this is a new book', newBook);
-    this.setState({
-      books: [newBook, ...this.state.books]
-    })
-    this.fetchBooks();
-  }
-
-  handleUpdate = async (bookId, bookInfo) => {
-    let apiUrl = `${SERVER}/books/${bookId}`;
-    await axios.put(apiUrl, bookInfo);
-
-    this.fetchBooks();
-  }
-
-  handleDelete = async bookId => {
-    let apiUrl = `${SERVER}/books/${bookId}`;
-    await axios.delete(apiUrl);
-
-    this.setState(state => ({
-      books: state.books.filter(book => book._id !== bookId)
-    }));
-  }
 
 
 
@@ -99,20 +56,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/">
               <h1>Home</h1>
-              <CreateBook onSave={this.handleSave} />
-              {this.state.books.length > 0 &&
-                <>
-                <h2>Books!</h2>
-                {this.state.books.map(book => (
-                  <Book
-                    key={book._id}
-                    book={book}
-                    onDelete={this.handleDelete}
-                    onUpdate={this.handleUpdate}
-                  />
-                ))}
-                </>
-              }
+              
               <BestBooks/>
             </Route>
             <Route path="/profile">

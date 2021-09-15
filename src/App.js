@@ -17,7 +17,14 @@ import CreateBook from './CreateBook';
 const SERVER = 'http://localhost:3000';
 
 class App extends React.Component {
-  state = { books: [] };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+      books: [],
+    }
+  }
 
   componentDidMount() {
     this.fetchBooks();
@@ -51,18 +58,13 @@ class App extends React.Component {
     await axios.delete(apiUrl);
 
     this.setState(state => ({
-      books:state.books.filter(book => book._id !== bookId)
+      books: state.books.filter(book => book._id !== bookId)
     }));
   }
 
 
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null,
-    }
-  }
+  
 
   loginHandler = (user) => {
     this.setState({
@@ -77,6 +79,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.books);
     return (
       <>
         <Router>

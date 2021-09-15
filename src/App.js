@@ -10,7 +10,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-
+import Book from './Book';
 import axios from 'axios';
 import CreateBook from './CreateBook';
 
@@ -24,7 +24,7 @@ class App extends React.Component {
   }
 
   async fetchBooks() {
-    let apiUrl = `${process.env.SERVER}/books`;
+    let apiUrl = `${SERVER}/books`;
     try {
       let results = await axios.get(apiUrl);
       this.setState({ books: results.data });
@@ -41,9 +41,21 @@ class App extends React.Component {
     let newBook = results.data;
     console.log(newBook);
     this.setState({
-      books: this.state.books.concat(newBook)
+      books: [newBook, ...this.state.books]
     })
+    this.fetchBooks();
   }
+
+  handleDelete = async bookId => {
+    let apiUrl = `${SERVER}/books/${bookId}`;
+    await axios.delete(apiUrl);
+
+    this.setState(state => ({
+      books:state.books.filter(book => book._id !== bookId)
+    }));
+  }
+
+
 
   constructor(props) {
     super(props);
@@ -79,7 +91,17 @@ class App extends React.Component {
               <h1>Home</h1>
               <CreateBook onSave={this.handleSave} />
               {this.state.books.length > 0 &&
-                <h2>Books!</h2>}
+                <>
+                <h2>Books!</h2>
+                {this.state.books.map(book => (
+                  <Book
+                    key={book._id}
+                    book={book}
+                    onDelete={this.handleDelete}
+                  />
+                ))}
+                </>
+              }
               <BestBooks/>
             </Route>
             <Route path="/profile">

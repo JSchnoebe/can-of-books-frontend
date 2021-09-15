@@ -13,6 +13,9 @@ export default class CreateBook extends React.Component {
     console.log(formData);
 
     this.props.onSave(formData);
+
+    event.target.reset();
+    elements.title.focus();
   }
   render() {
     return (

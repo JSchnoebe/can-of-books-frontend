@@ -48,7 +48,7 @@ class App extends React.Component {
   render() {
 
     const { auth0 } = this.props;
-    console.log(auth0);
+    console.log('this is in the app.js', auth0);
 
     console.log(this.state.books);
     return (
@@ -59,10 +59,12 @@ class App extends React.Component {
           <nav>
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
-          {auth0.isAuthenticated
+          {auth0.isLoading
+          ? <p>Spinner</p>
+          : auth0.isAuthenticated
             ? (
               <>
-                Welcome Back, {auth0.user.nickname}
+                Welcome Back, {auth0.user.name}
                 <LogoutButton />
               </>
             )

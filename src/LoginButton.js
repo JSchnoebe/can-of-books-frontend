@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
-import './login.css';
+import './Login.css';
 
 const LoginButton = () => {
   const auth0 = useAuth0();

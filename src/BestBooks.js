@@ -13,15 +13,30 @@ class BestBooks extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
+    if(!this.state.books)
     this.fetchBooks();
   }
 
 
   async fetchBooks() {
+    const { auth0 } = this.props;
+    if (!auth0.isAuthenticated) {
+      return;
+    }
+
+    let claims = await auth0.getIdTokenClaims();
+    console.log('these are my claims', claims);
+
+    let jwt = claims.__raw;
+
     let apiUrl = `${SERVER}/books`;
     try {
-      let results = await axios.get(apiUrl);
+      let results = await axios.get(apiUrl, {
+        headers: {
+          'Authorization': `Bearer ${jwt}`,
+        },
+      });
       this.setState({ books: results.data });
     }
     catch (err) {

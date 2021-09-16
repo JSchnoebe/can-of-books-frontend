@@ -47,10 +47,11 @@ class BestBooks extends React.Component {
     let apiUrl = `${SERVER}/books/${bookId}`;
     await axios.put(apiUrl, bookInfo);
 
-    this.fetchBooks();
+    await this.fetchBooks();
   }
 
   handleDelete = async bookId => {
+    console.log('this is my book id', bookId);
     let apiUrl = `${SERVER}/books/${bookId}`;
     await axios.delete(apiUrl);
 
@@ -82,7 +83,6 @@ class BestBooks extends React.Component {
                     book={book}
                     onDelete={this.handleDelete}
                     onUpdate={this.handleUpdate}
-                    onSave={this.handleSave}
                   />
                 ))}
                 </>

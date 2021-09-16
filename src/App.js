@@ -1,21 +1,37 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import BestBooks from './BestBooks';
+import Profile from './Profile';
+import { withAuth0 } from "@auth0/auth0-react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
+import LoginButton from './Login';
+import LogoutButton from './LogoutButton';
+
+
+
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
+      user: {username: "JSchnoebelen", email:"jarenschnoebelen@yahoo.com" },
+      books: [],
     }
   }
+
+
+
+
+
+  
 
   loginHandler = (user) => {
     this.setState({
@@ -30,15 +46,40 @@ class App extends React.Component {
   }
 
   render() {
+
+    const { auth0 } = this.props;
+    console.log('this is in the app.js', auth0);
+
+    console.log(this.state.books);
     return (
       <>
         <Router>
           <Header user={this.state.user} onLogout={this.logoutHandler} />
+          <h1>World of Books</h1>
+          <nav>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+          {auth0.isLoading
+          ? <p>Spinner</p>
+          : auth0.isAuthenticated
+            ? (
+              <>
+                Welcome Back, {auth0.user.name}
+                <LogoutButton />
+              </>
+            )
+            : <LoginButton />
+          }
+          </nav>
           <Switch>
             <Route exact path="/">
-              {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
+              <h1>Home</h1>
+              
+              <BestBooks/>
             </Route>
-            {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
+            <Route path="/profile">
+            <Profile/>
+            </Route>
           </Switch>
           <Footer />
         </Router>
@@ -47,4 +88,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withAuth0(App);
